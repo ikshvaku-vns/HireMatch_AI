@@ -14,7 +14,11 @@ export interface IAnalysisResult extends Document {
   verdict: string;
   skillsFound: string[];
   skillsMissing: string[];
-  suggestions: string[];
+  suggestions: {
+    original: string;
+    improved: string;
+    reason: string;
+  }[];
   interviewQuestions: {
     question: string;
     category: string;
@@ -37,7 +41,11 @@ const AnalysisResultSchema = new Schema({
   verdict: { type: String, required: true },
   skillsFound: [String],
   skillsMissing: [String],
-  suggestions: [String],
+  suggestions: [{
+    original: String,
+    improved: String,
+    reason: String,
+  }],
   interviewQuestions: [{
     question: String,
     category: String,

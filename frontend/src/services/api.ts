@@ -16,7 +16,11 @@ export interface AnalysisResponse {
   verdict: string;
   skillsFound: string[];
   skillsMissing: string[];
-  suggestions: string[];
+  suggestions: {
+    original: string;
+    improved: string;
+    reason: string;
+  }[];
   interviewQuestions: {
     question: string;
     category: string;

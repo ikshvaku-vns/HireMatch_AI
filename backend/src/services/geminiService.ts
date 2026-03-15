@@ -77,6 +77,27 @@ ${resumeText}
 
     // Attempt to parse to ensure it's valid JSON before returning
     const parsedData = JSON.parse(response.text);
+
+    // Normalize suggestions: schema expects array of { original, improved, reason }
+    if (parsedData.suggestions != null) {
+      const raw = parsedData.suggestions;
+      if (typeof raw === 'string') {
+        try {
+          parsedData.suggestions = JSON.parse(raw);
+        } catch {
+          parsedData.suggestions = [];
+        }
+      }
+      if (!Array.isArray(parsedData.suggestions)) {
+        parsedData.suggestions = [];
+      }
+      parsedData.suggestions = parsedData.suggestions.map((s: any) =>
+        typeof s === 'object' && s && 'original' in s
+          ? { original: s.original ?? '', improved: s.improved ?? '', reason: s.reason ?? '' }
+          : { original: String(s), improved: '', reason: '' }
+      );
+    }
+
     return parsedData;
   } catch (error) {
     console.error("Gemini API Error:", error);

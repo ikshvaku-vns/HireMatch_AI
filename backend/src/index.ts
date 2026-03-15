@@ -9,7 +9,20 @@ dotenv.config({ path: '../.env' }); // Load .env from project root
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// CORS: allow frontend origin(s). Set FRONTEND_ORIGIN (or FRONTEND_ORIGINS for multiple, comma-separated) in .env to restrict; omit to allow all origins.
+const allowedOrigins = process.env.FRONTEND_ORIGINS
+  ? process.env.FRONTEND_ORIGINS.split(',').map((o) => o.trim())
+  : process.env.FRONTEND_ORIGIN
+    ? [process.env.FRONTEND_ORIGIN.trim()]
+    : undefined;
+
+app.use(
+  cors({
+    ...(allowedOrigins && allowedOrigins.length > 0
+      ? { origin: allowedOrigins }
+      : {}),
+  })
+);
 app.use(express.json());
 
 app.use('/api', analyzeRouter);

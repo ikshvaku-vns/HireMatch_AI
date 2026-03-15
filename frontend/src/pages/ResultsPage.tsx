@@ -167,11 +167,15 @@ export default function ResultsPage() {
                 <span className="material-symbols-outlined">lightbulb</span>
                 What to add to your resume
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {data.suggestions.map((suggestion, idx) => (
                   <li key={idx} className="flex gap-3">
-                    <span className="material-symbols-outlined text-primary text-sm mt-1">arrow_forward</span>
-                    <p className="text-sm">{suggestion}</p>
+                    <span className="material-symbols-outlined text-primary text-sm mt-1 shrink-0">arrow_forward</span>
+                    <div className="text-sm space-y-1">
+                      <p><span className="font-medium text-slate-500">Original:</span> {suggestion.original}</p>
+                      <p><span className="font-medium text-primary">Improved:</span> {suggestion.improved}</p>
+                      <p className="text-slate-600 italic">Why: {suggestion.reason}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
